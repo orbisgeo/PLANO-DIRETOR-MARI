@@ -1,0 +1,21 @@
+{
+"type": "FeatureCollection",
+"name": "UNIDADES_SAUDE",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::31985" } },
+"features": [
+{ "type": "Feature", "properties": { "fid": 1, "id": 1, "UBS": "UBS PASTO NOVO" }, "geometry": { "type": "Point", "coordinates": [ 243874.207641656219494, 9219795.119417788460851 ] } },
+{ "type": "Feature", "properties": { "fid": 2, "id": 2, "UBS": "UBS SILVINO COSTA E SANTA JÚLIA" }, "geometry": { "type": "Point", "coordinates": [ 243343.919815759087214, 9219258.50437174923718 ] } },
+{ "type": "Feature", "properties": { "fid": 3, "id": 3, "UBS": "CEO" }, "geometry": { "type": "Point", "coordinates": [ 243997.823698231833987, 9218701.254152752459049 ] } },
+{ "type": "Feature", "properties": { "fid": 4, "id": 4, "UBS": "UBS BAIRRO VERMELHO" }, "geometry": { "type": "Point", "coordinates": [ 243800.605565571546322, 9217972.299655565991998 ] } },
+{ "type": "Feature", "properties": { "fid": 5, "id": 5, "UBS": "UBS FRANCISCO FAUSTINO E TERESA SALES" }, "geometry": { "type": "Point", "coordinates": [ 244890.322586249763845, 9219034.035630028694868 ] } },
+{ "type": "Feature", "properties": { "fid": 6, "id": 6, "UBS": "CEAS (POLICLÍNICA MUNICIPAL)" }, "geometry": { "type": "Point", "coordinates": [ 243937.809178410738241, 9219281.426673151552677 ] } },
+{ "type": "Feature", "properties": { "fid": 7, "id": 7, "UBS": "CAPS" }, "geometry": { "type": "Point", "coordinates": [ 244030.72392349326401, 9218859.361694648861885 ] } },
+{ "type": "Feature", "properties": { "fid": 8, "id": 8, "UBS": "CENTRO DE SAÚDE DE MARÍ" }, "geometry": { "type": "Point", "coordinates": [ 244025.036104795668507, 9218890.786892954260111 ] } },
+{ "type": "Feature", "properties": { "fid": 9, "id": 9, "UBS": "MEDICINA OCUPACIONAL" }, "geometry": { "type": "Point", "coordinates": [ 244040.606508480326738, 9218894.555072842165828 ] } },
+{ "type": "Feature", "properties": { "fid": 10, "id": 10, "UBS": "ESPAÇO SAÚDE" }, "geometry": { "type": "Point", "coordinates": [ 243935.808448977244552, 9219089.931645108386874 ] } },
+{ "type": "Feature", "properties": { "fid": 11, "id": 11, "UBS": "UBS CÔNEGO CORNÉLIO DE FARIAS" }, "geometry": { "type": "Point", "coordinates": [ 244055.821423496352509, 9219088.865179101005197 ] } },
+{ "type": "Feature", "properties": { "fid": 12, "id": 12, "UBS": "UBS PROCANOR" }, "geometry": { "type": "Point", "coordinates": [ 243719.813533936045133, 9218129.045773878693581 ] } },
+{ "type": "Feature", "properties": { "fid": 13, "id": 13, "UBS": "UBS NOVO MARÍ" }, "geometry": { "type": "Point", "coordinates": [ 243391.484199617436389, 9220094.755915762856603 ] } },
+{ "type": "Feature", "properties": { "fid": 14, "id": 14, "UBS": "HOSPITAL MUNICIPAL SAGRADO CORAÇÃO DE JESUS" }, "geometry": { "type": "Point", "coordinates": [ 244076.801513825572329, 9218907.609618205577135 ] } }
+]
+}
