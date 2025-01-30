@@ -1,5 +1,7 @@
 /* Reset básico para garantir consistência entre os navegadores */
-* {
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -7,48 +9,140 @@
 
 /* Corpo da página */
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f7f8fa;
   color: #333;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
   min-height: 100vh;
   margin: 0;
+  padding: 20px;
+}
+
+/* Logomarca */
+.logo {
+  width: 80px;
+  height: auto;
+  margin-bottom: 20px;
+  display: block;
+  transition: transform 0.3s ease-in-out;
+}
+
+.logo:hover {
+  transform: scale(1.1);
+}
+
+/* Título da página */
+h1 {
+  font-size: 2.2rem;
+  color: #333;
+  text-align: center;
+  margin-bottom: 2rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  max-width: 90%;
+  line-height: 1.3;
 }
 
 /* Estilo do contêiner do mapa */
 #map {
   width: 100%;
-  max-width: 800px;
-  height: 3508px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background-color: #ffffff;
+  max-width: 1000px;
+  height: 70vh;
+  max-height: 600px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  transition: transform 0.3s ease-in-out;
 }
 
-/* Adicionando um título */
-h1 {
-  font-size: 24px;
-  text-align: center;
-  margin-bottom: 20px;
-  color: #444;
+#map:hover {
+  transform: scale(1.05);
 }
 
 /* Estilo do rodapé */
 footer {
   text-align: center;
-  margin-top: 20px;
-  font-size: 14px;
-  color: #777;
+  margin-top: 3rem;
+  font-size: 0.875rem;
+  color: #aaa;
 }
 
 /* Estilo de links */
 a {
-  color: #007BFF;
+  color: #007bff;
   text-decoration: none;
+  font-weight: 500;
 }
 
 a:hover {
   text-decoration: underline;
+}
+
+/* Responsividade */
+@media (max-width: 1024px) {
+  h1 {
+    font-size: 2rem;
+  }
+
+  .logo {
+    width: 140px;
+  }
+
+  #map {
+    height: 55vh;
+    max-height: 500px;
+  }
+
+  footer {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: 15px;
+  }
+
+  #map {
+    height: 50vh;
+    max-height: 450px;
+  }
+
+  h1 {
+    font-size: 1.75rem;
+  }
+
+  .logo {
+    width: 130px;
+  }
+
+  footer {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 10px;
+  }
+
+  #map {
+    height: 45vh;
+    max-height: 400px;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  .logo {
+    width: 110px;
+  }
+
+  footer {
+    font-size: 0.7rem;
+  }
 }
