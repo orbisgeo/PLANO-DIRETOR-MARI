@@ -18,7 +18,8 @@ let osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 // Criar o mapa com CRS correto (EPSG:3857, padrão do OSM)
 var map = L.map('map', {
   crs: L.CRS.EPSG3857,
-  layers: [osm]
+  layers: [osm],
+  maxZoom: 22 // Permite maior aproximação
 }).setView([-23.5505, -46.6333], 13);
 
 // Objetos para armazenar camadas carregadas
@@ -28,13 +29,11 @@ let feicaoSelecionada = null;
 
 // Definir arquivos GeoJSON
 const arquivosGeoJSON = {
-
   'Ruas': 'ruas.geojson',
   'UNIDADES DE SAÚDE': 'UNIDADES_SAUDE.geojson',
   'ESCOLAS': 'ESCOLAS.geojson',
   'LOTES': 'lotes_limpos.geojson',
   'Bairros': 'bairros.geojson',
-
 };
 
 // Função para converter coordenadas de EPSG:31985 para EPSG:4326 usando proj4
@@ -47,7 +46,11 @@ function getEstilo(nomeCamada) {
   const estilos = {
     'Bairros': { fillColor: 'green', color: 'red', weight: 2, fillOpacity: 0.1 },
     'LOTES': { fillColor: 'white', color: 'grey', weight: 1, fillOpacity: 0.5 },
-    'Ruas': { color: 'black', weight: 3 },
+    'Ruas': { 
+      color: 'black', 
+      weight: window.innerWidth < 768 ? 6 : 3, // Aumenta espessura no mobile
+      opacity: 0.8 
+    }
   };
   return estilos[nomeCamada] || { fillColor: 'blue', color: 'black', weight: 2, fillOpacity: 0.5 };
 }
@@ -59,6 +62,40 @@ function getEstiloPonto(nomeCamada) {
     'UNIDADES DE SAÚDE': { radius: 6, color: 'green', fillColor: 'lightgreen', fillOpacity: 0.8 }
   };
   return estilosPonto[nomeCamada] || { radius: 4, color: 'black', fillColor: 'grey', fillOpacity: 0.7 };
+}
+
+// Evento de clique e hover para melhorar a interação no mobile
+function onEachFeature(feature, layer) {
+  let popupContent = Object.keys(feature.properties)
+    .map(key => `<b>${key}:</b> ${feature.properties[key]}`)
+    .join('<br>');
+  layer.bindPopup(popupContent);
+
+  // Evento de clique para destacar a feição
+  layer.on('click', function () {
+    if (feicaoSelecionada) {
+      feicaoSelecionada.setStyle(getEstilo(feicaoSelecionada.options.name) || {});
+    }
+    if (layer.setStyle) {
+      layer.setStyle({
+        weight: 8, // Aumenta a espessura ao ser clicado
+        color: 'yellow',
+        opacity: 1
+      });
+    }
+    feicaoSelecionada = layer;
+  });
+
+  // Melhora o toque no mobile (aumenta o tamanho ao passar o dedo)
+  layer.on('mouseover', function () {
+    this.previousStyle = this.options.style; // Guarda o estilo anterior
+    this.setStyle({ weight: 8, opacity: 1 });
+  });
+
+  layer.on('mouseout', function () {
+    // Restaura o estilo anterior após o mouse sair
+    this.setStyle(this.previousStyle || getEstilo(this.options.name) || {});
+  });
 }
 
 // Função para carregar camadas GeoJSON após o carregamento do proj4
@@ -81,28 +118,7 @@ function carregarCamadas() {
             }
             return L.marker(latlng); // Padrão para pontos que não tenham estilo definido
           },
-          onEachFeature: function (feature, layer) {
-            let popupContent = Object.keys(feature.properties)
-              .map(key => `<b>${key}:</b> ${feature.properties[key]}`)
-              .join('<br>');
-            layer.bindPopup(popupContent);
-
-            // Evento de clique para destacar a feição
-            layer.on('click', function () {
-              if (feicaoSelecionada) {
-                feicaoSelecionada.setStyle(getEstilo(feicaoSelecionada.options.name) || {});
-              }
-              if (layer.setStyle) {
-                layer.setStyle({
-                  fillColor: 'yellow',
-                  fillOpacity: 0.8,
-                  color: 'red',
-                  weight: 4
-                });
-              }
-              feicaoSelecionada = layer;
-            });
-          }
+          onEachFeature: onEachFeature
         });
 
         camada.addTo(map);
