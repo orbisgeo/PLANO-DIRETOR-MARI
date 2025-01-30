@@ -44,13 +44,14 @@ function projecao31985Para4326(x, y) {
 // Função para definir estilos personalizados por camada
 function getEstilo(nomeCamada) {
   const estilos = {
-    'Bairros': { fillColor: 'green', color: 'red', weight: 2, fillOpacity: 0.1 },
+    
     'LOTES': { fillColor: 'white', color: 'grey', weight: 1, fillOpacity: 0.5 },
-    'Ruas': { 
+        'Ruas': { 
       color: 'black', 
       weight: window.innerWidth < 768 ? 6 : 3, // Aumenta espessura no mobile
       opacity: 0.8 
-    }
+    },
+    'Bairros': { fillColor: 'green', color: 'red', weight: 2, fillOpacity: 0.1 },
   };
   return estilos[nomeCamada] || { fillColor: 'blue', color: 'black', weight: 2, fillOpacity: 0.5 };
 }
