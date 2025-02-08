@@ -44,9 +44,8 @@ function projecao31985Para4326(x, y) {
 // Função para definir estilos personalizados por camada
 function getEstilo(nomeCamada) {
   const estilos = {
-    
     'LOTES': { fillColor: 'white', color: 'grey', weight: 1, fillOpacity: 0.5 },
-        'Ruas': { 
+    'Ruas': { 
       color: 'black', 
       weight: window.innerWidth < 768 ? 6 : 3, // Aumenta espessura no mobile
       opacity: 0.8 
@@ -72,14 +71,13 @@ function onEachFeature(feature, layer) {
     .join('<br>');
   layer.bindPopup(popupContent);
 
-  // Evento de clique para destacar a feição
   layer.on('click', function () {
     if (feicaoSelecionada) {
       feicaoSelecionada.setStyle(getEstilo(feicaoSelecionada.options.name) || {});
     }
     if (layer.setStyle) {
       layer.setStyle({
-        weight: 8, // Aumenta a espessura ao ser clicado
+        weight: 8, 
         color: 'yellow',
         opacity: 1
       });
@@ -87,19 +85,16 @@ function onEachFeature(feature, layer) {
     feicaoSelecionada = layer;
   });
 
-  // Melhora o toque no mobile (aumenta o tamanho ao passar o dedo)
   layer.on('mouseover', function () {
-    this.previousStyle = this.options.style; // Guarda o estilo anterior
+    this.previousStyle = this.options.style; 
     this.setStyle({ weight: 8, opacity: 1 });
   });
 
   layer.on('mouseout', function () {
-    // Restaura o estilo anterior após o mouse sair
     this.setStyle(this.previousStyle || getEstilo(this.options.name) || {});
   });
 }
 
-// Função para carregar camadas GeoJSON após o carregamento do proj4
 function carregarCamadas() {
   proj4.defs("EPSG:31985", "+proj=utm +zone=25 +south +datum=SIRGAS2000 +units=m +no_defs");
 
@@ -117,7 +112,7 @@ function carregarCamadas() {
             if (nome === 'ESCOLAS' || nome === 'UNIDADES DE SAÚDE') {
               return L.circleMarker(latlng, getEstiloPonto(nome));
             }
-            return L.marker(latlng); // Padrão para pontos que não tenham estilo definido
+            return L.marker(latlng);
           },
           onEachFeature: onEachFeature
         });
@@ -142,10 +137,8 @@ function carregarCamadas() {
   });
 }
 
-// Carregar proj4 e depois as camadas
 loadProj4(carregarCamadas);
 
-// Marcar localização do usuário
 if (navigator.geolocation) {
   navigator.geolocation.getCurrentPosition(position => {
     let userLatLng = L.latLng(position.coords.latitude, position.coords.longitude);
@@ -158,3 +151,65 @@ if (navigator.geolocation) {
 } else {
   console.error("Geolocalização não suportada pelo navegador.");
 }
+
+document.body.insertAdjacentHTML('beforeend', `
+  <div style="position: absolute; top: 10px; left: 50px; z-index: 1000; background: white; padding: 10px; border-radius: 5px; box-shadow: 0 2px 6px rgba(0,0,0,0.3);">
+    <input type="text" id="pesquisaLote" placeholder="Pesquisar Lote..." style="padding: 5px; width: 200px;">
+    <button onclick="buscarLote()" style="padding: 5px;">Buscar</button>
+    <div id="resultadosPesquisa" style="margin-top: 10px;"></div>
+  </div>
+`);
+
+function buscarLote() {
+  const termoPesquisa = document.getElementById('pesquisaLote').value.trim().toLowerCase();
+  const resultadosDiv = document.getElementById('resultadosPesquisa');
+  resultadosDiv.innerHTML = '';
+
+  if (!termoPesquisa) {
+    alert('Digite um termo para pesquisar.');
+    return;
+  }
+
+  const camadaLotes = camadasCarregadas['LOTES'];
+  if (!camadaLotes) {
+    alert('A camada de lotes ainda não foi carregada.');
+    return;
+  }
+
+  let lotesEncontrados = [];
+  camadaLotes.eachLayer(layer => {
+    const props = layer.feature.properties;
+    for (let key in props) {
+      if (props[key] && props[key].toString().toLowerCase().includes(termoPesquisa)) {
+        lotesEncontrados.push({ layer, props });
+        break;
+      }
+    }
+  });
+
+  if (lotesEncontrados.length > 0) {
+    resultadosDiv.innerHTML = lotesEncontrados.map((item, index) => `
+      <div style="cursor: pointer; margin: 5px 0; padding: 5px; background:rgb(10, 174, 24); border: 1px solid #ccc; border-radius: 4px;"
+           onclick="centralizarLote(${index})">
+        <b>Lote:</b> ${item.props.NUMERO || 'S/N'} - <b>Logradouro:</b> ${item.props.LOGRADOURO || 'Desconhecido'}
+      </div>
+    `).join('');
+
+    window.lotesEncontrados = lotesEncontrados;
+  } else {
+    alert('Lote não encontrado.');
+  }
+}
+
+function centralizarLote(index) {
+  const loteSelecionado = window.lotesEncontrados[index];
+
+  if (feicaoSelecionada) {
+    feicaoSelecionada.setStyle(getEstilo('LOTES'));
+  }
+
+  loteSelecionado.layer.setStyle({ color: 'red', weight: 4, fillOpacity: 0.7 });
+  map.fitBounds(loteSelecionado.layer.getBounds());
+  loteSelecionado.layer.openPopup();
+  feicaoSelecionada = loteSelecionado.layer;
+} 
