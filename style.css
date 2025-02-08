@@ -1,90 +1,136 @@
-/* Reset */
+/* =========================== */
+/* RESET E CONFIGURAÇÕES GERAIS */
+/* =========================== */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Corpo */
 body {
   font-family: 'Inter', sans-serif;
   background-color: #1e1e2e;
   color: #e0e0e0;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   height: 100vh;
   padding: 20px;
+  overflow: hidden; /* Evita scroll desnecessário */
 }
 
-/* --- VERSÃO DESKTOP --- */
-@media (min-width: 769px) {
-  /* Cabeçalho */
-  .header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    background: rgba(0, 0, 0, 0.5);
-    padding: 8px 16px;
-    border-radius: 8px;
-    z-index: 1000;
-  }
-
-  .logo {
-    width: 40px;
-    height: auto;
-  }
-
-  .title {
-    font-size: 1rem;
-    font-weight: 600;
-    opacity: 0.8;
-  }
-
-  /* Mapa */
-  #map {
-    width: 90%;
-    max-width: 1200px;
-    height: 80vh;
-    border-radius: 12px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-    position: relative;
-    z-index: 1;
-  }
+/* =========================== */
+/* LAYOUT PRINCIPAL */
+/* =========================== */
+.container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  gap: 15px;
 }
 
-/* --- VERSÃO MOBILE --- */
+/* Sidebar (área de pesquisa e resultados) */
+.sidebar {
+  width: 25%;
+  min-width: 280px;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 15px;
+  border-radius: 12px;
+  backdrop-filter: blur(5px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+  max-height: 100%;
+}
+
+/* Caixa de pesquisa */
+.search-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.search-box input {
+  padding: 10px;
+  width: 100%;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.search-box button {
+  padding: 10px;
+  background: rgb(10, 174, 24);
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: background 0.3s ease;
+}
+
+.search-box button:hover {
+  background: rgb(8, 140, 20);
+}
+
+/* Resultados da pesquisa */
+#resultadosPesquisa {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/* Mapa ocupa o restante do espaço */
+#map {
+  flex: 1;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+/* =========================== */
+/* ESTILOS DOS RESULTADOS */
+/* =========================== */
+.resultado-lote {
+  cursor: pointer;
+  padding: 8px;
+  background: rgb(10, 174, 24);
+  border-radius: 6px;
+  color: white;
+  font-size: 0.9rem;
+  transition: background 0.3s ease;
+}
+
+.resultado-lote:hover {
+  background: rgb(8, 140, 20);
+}
+
+.resultado-lote.destacado {
+  background: yellow;
+  color: black;
+}
+
+/* =========================== */
+/* RESPONSIVIDADE */
+/* =========================== */
 @media (max-width: 768px) {
   body {
+    flex-direction: column;
     padding: 10px;
-    height: auto;
   }
 
-  /* Cabeçalho compacto */
-  .header {
-    top: 5px;
-    left: 5px;
-    padding: 6px 10px;
-    gap: 6px;
+  .container {
+    flex-direction: column;
+    gap: 10px;
   }
 
-  .logo {
-    width: 30px;
-  }
-
-  .title {
-    font-size: 0.85rem;
-  }
-
-  /* Mapa ocupa mais espaço */
-  #map {
+  .sidebar {
     width: 100%;
-    height: 85vh;
-    border-radius: 0;
-    box-shadow: none;
+    min-width: unset;
+    height: auto;
+    max-height: 40vh;
+  }
+
+  #map {
+    height: 55vh;
   }
 }
