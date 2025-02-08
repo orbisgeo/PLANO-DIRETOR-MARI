@@ -189,12 +189,11 @@ function buscarLote() {
 
   if (lotesEncontrados.length > 0) {
     resultadosDiv.innerHTML = lotesEncontrados.map((item, index) => `
-      <div style="cursor: pointer; margin: 5px 0; padding: 5px; background:rgb(10, 174, 24); border: 1px solid #ccc; border-radius: 4px;"
-           onclick="centralizarLote(${index})">
-        <b>Lote:</b> ${item.props.NUMERO || 'S/N'} - <b>Logradouro:</b> ${item.props.LOGRADOURO || 'Desconhecido'}
-      </div>
-    `).join('');
-
+    <div class="resultado-lote" onclick="destacarOpcao(${index}, this)">
+      <b>Lote:</b> ${item.props.NUMERO || 'S/N'} - <b>Logradouro:</b> ${item.props.LOGRADOURO || 'Desconhecido'}
+    </div>
+  `).join('');
+  
     window.lotesEncontrados = lotesEncontrados;
   } else {
     alert('Lote não encontrado.');
@@ -213,3 +212,18 @@ function centralizarLote(index) {
   loteSelecionado.layer.openPopup();
   feicaoSelecionada = loteSelecionado.layer;
 } 
+
+function destacarOpcao(index, elemento) {
+  // Remove o destaque de todas as opções
+  document.querySelectorAll('.resultado-lote').forEach(el => {
+    el.style.background = 'rgb(10, 174, 24)'; // Volta para a cor original
+    el.style.color = 'white';
+  });
+
+  // Aplica o destaque na opção clicada
+  elemento.style.background = 'yellow';
+  elemento.style.color = 'black';
+
+  // Centraliza o lote no mapa
+  centralizarLote(index);
+}
