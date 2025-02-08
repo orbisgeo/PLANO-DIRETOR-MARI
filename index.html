@@ -9,12 +9,18 @@
 </head>
 <body>
   <div class="header">
-    <img src="BRASÁO_MARI.jpg" alt="Logomarca" class="logo" />
+    <img src="ORBIS_logo_fundo_transparente_CUT.png" alt="Logomarca" class="logo" />
     <span class="title">ORBISMAP - MARI</span>
   </div>
 
   <div id="map"></div>
 
+  <div id="pesquisaContainer">
+    <input type="text" id="pesquisaLote" placeholder="Pesquisar Lote...">
+    <button onclick="buscarLote()">Buscar</button>
+    <div id="resultadosPesquisa"></div>
+  </div>
+  
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="mapa.js"></script>
 </body>
