@@ -72,7 +72,7 @@ function onEachFeature(feature, layer) {
   layer.bindPopup(popupContent);
 
   layer.on('click', function () {
-    if (feicaoSelecionada) {
+    if (feicaoSelecionada && feicaoSelecionada !== layer) {
       feicaoSelecionada.setStyle(getEstilo(feicaoSelecionada.options.name) || {});
     }
     if (layer.setStyle) {
@@ -91,7 +91,9 @@ function onEachFeature(feature, layer) {
   });
 
   layer.on('mouseout', function () {
-    this.setStyle(this.previousStyle || getEstilo(this.options.name) || {});
+    if (this !== feicaoSelecionada) {
+      this.setStyle(this.previousStyle || getEstilo(this.options.name) || {});
+    }
   });
 }
 
@@ -152,14 +154,6 @@ if (navigator.geolocation) {
   console.error("Geolocalização não suportada pelo navegador.");
 }
 
-document.body.insertAdjacentHTML('beforeend', `
-  <div style="position: absolute; top: 10px; left: 50px; z-index: 1000; background: white; padding: 10px; border-radius: 5px; box-shadow: 0 2px 6px rgba(0,0,0,0.3);">
-    <input type="text" id="pesquisaLote" placeholder="Pesquisar Lote..." style="padding: 5px; width: 200px;">
-    <button onclick="buscarLote()" style="padding: 5px;">Buscar</button>
-    <div id="resultadosPesquisa" style="margin-top: 10px;"></div>
-  </div>
-`);
-
 function buscarLote() {
   const termoPesquisa = document.getElementById('pesquisaLote').value.trim().toLowerCase();
   const resultadosDiv = document.getElementById('resultadosPesquisa');
@@ -205,6 +199,7 @@ function centralizarLote(index) {
 
   if (feicaoSelecionada) {
     feicaoSelecionada.setStyle(getEstilo('LOTES'));
+    feicaoSelecionada = null;
   }
 
   loteSelecionado.layer.setStyle({ color: 'red', weight: 4, fillOpacity: 0.7 });
@@ -214,16 +209,13 @@ function centralizarLote(index) {
 } 
 
 function destacarOpcao(index, elemento) {
-  // Remove o destaque de todas as opções
   document.querySelectorAll('.resultado-lote').forEach(el => {
-    el.style.background = 'rgb(10, 174, 24)'; // Volta para a cor original
+    el.style.background = 'rgb(10, 174, 24)';
     el.style.color = 'white';
   });
 
-  // Aplica o destaque na opção clicada
   elemento.style.background = 'yellow';
   elemento.style.color = 'black';
 
-  // Centraliza o lote no mapa
   centralizarLote(index);
 }
